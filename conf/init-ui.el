@@ -6,13 +6,13 @@
       doom-themes-enable-italic t) ; if nil, italics is universally disabled
 ;(load-theme 'doom-horizon t)
 ;(load-theme 'doom-dracula t)
-;(load-theme 'doom-one t)
+(load-theme 'doom-one t)
 ;(load-theme 'doom-vibrant t)
 ;(load-theme 'doom-acario-dark t)
 ;(load-theme 'doom-Iosvkem)
 ;(load-theme 'doom-material)
 ;(load-theme 'doom-monokai-classic)
-(load-theme 'doom-monokai-pro)
+;(load-theme 'doom-monokai-pro)
 ;(load-theme 'doom-molokai)
 ;(load-theme 'doom-palenight)
 ;(load-theme 'doom-snazzy)
@@ -109,12 +109,6 @@
 ;  ;(centaur-tabs-headline-match)
 ;)
 
-; remove some GUI elements
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-
-
 ;; Download icons
 (use-package all-the-icons
   :ensure t)
@@ -164,15 +158,26 @@
 
 
 ;; Start fullscreen
-;(add-hook 'window-setup-hook #'toggle-frame-fullscreen)
+(add-hook 'window-setup-hook #'toggle-frame-fullscreen)
+(custom-set-variables
+  '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+; remove some GUI elements
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+
+;(run-with-idle-timer 0.1 nil 'toggle-fullscreen)
 
 ;; Set window size and center it on the screen
 ;; emacs-x = (screen-x / 2) - (emacs-width / 2)
 ;; emacs-y = (screen-y / 2) - (emacs-height / 2)
-(setq emacs-width-px 1400)
-(setq emacs-height-px 768)
-(set-frame-size (selected-frame) emacs-width-px emacs-height-px t)
-(set-frame-position (selected-frame) (- (/ (display-pixel-width) 2) (/ emacs-width-px 2)) (- (/ (display-pixel-height) 2) (/ emacs-height-px 2)))
+;(setq emacs-width-px 1400)
+;(setq emacs-height-px 768)
+;(set-frame-size (selected-frame) emacs-width-px emacs-height-px t)
+;(set-frame-position (selected-frame) (- (/ (display-pixel-width) 2) (/ emacs-width-px 2)) (- (/ (display-pixel-height) 2) (/ emacs-height-px 2)))
+
 
 ;(setq-default line-spacing 0.2)
 (setq-default indent-tabs-mode nil)  ; don't use tabs by default

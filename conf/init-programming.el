@@ -13,5 +13,6 @@
 (require 'init-web)
 (require 'init-rust)
 (require 'init-bash)
+(require 'init-markdown)
 
 (provide 'init-programming)
