@@ -27,7 +27,8 @@
   :init
   (setq sly-command-switch-to-existing-lisp 'always)
   :config
-  (setq inferior-lisp-program (executable-find "sbcl"))
+  (setq inferior-lisp-program (executable-find "clisp"))
+  ;(setq inferior-lisp-program (executable-find "sbcl"))
   ;(setq inferior-lisp-program "ros dynamic-space-size=3gb -Q -- run")  ; use roswell to run lisp (it's like stack for haskell)
   (autoload 'paredit-mode "paredit" "Minor mode for structurally editing Lisp code." 
   (show-paren-mode 1)

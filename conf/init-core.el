@@ -4,7 +4,7 @@
 (setq package-quickstart t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-;(unless package--initialized (package-initialize))
+;;(unless package--initialized (package-initialize))
 
 ;;; Install some fundamental packages
 ;(defvar my-packages '(use-package general))
