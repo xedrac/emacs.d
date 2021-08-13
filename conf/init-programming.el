@@ -10,7 +10,7 @@
   :bind (("C-x g" . magit-status)))
 
 (require 'init-lisp)
-(require 'init-web)
+;(require 'init-web)
 (require 'init-rust)
 (require 'init-bash)
 (require 'init-markdown)

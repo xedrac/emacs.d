@@ -79,7 +79,8 @@
   (paradox-enable))
 
 (use-package general      ; Nicer keybinding support with evil
-  :ensure t)
+  :ensure t
+  :init (setq evil-want-keybinding nil))
 
 (use-package undo-tree    ; Sane undo/redo behavior
   :ensure t

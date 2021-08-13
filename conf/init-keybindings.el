@@ -21,6 +21,7 @@
   "e f" 'eval-defun
   "+"   'text-scale-increase
   "_"   'text-scale-decrease
+  "c"   'comment-line
 
   ; files
   "-" 'counsel-fzf

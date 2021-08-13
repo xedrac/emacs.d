@@ -41,8 +41,8 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-keybinding nil
-        evil-want-integration nil)
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   ;(setq evil-want-C-u-scroll t)
   ;(setq evil-shift-width 4)
   ;(setq evil-search-module 'evil-search)
