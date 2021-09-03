@@ -1,9 +1,3 @@
-;; improved list-packages with github integration
-(use-package paradox
-  :ensure t
-  :init
-  (setf paradox-github-token "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")
-  (paradox-enable))
 
 ;; better custom keybinding support with evil keymaps
 (use-package general
@@ -41,7 +35,13 @@
   (setq evil-visual-state-cursor '("orange" box))
   (setq evil-insert-state-cursor '("magenta" bar))
   (setq evil-replace-state-cursor '("red" bar))
-  (setq evil-operator-state-cursor '("red" hollow)))
+  (setq evil-operator-state-cursor '("red" hollow))
+
+  (general-define-key
+    :states 'motion
+    ";" 'evil-ex
+    ":" 'evil-repeat-find-char))
+
 
 (use-package evil-collection
   :after evil
@@ -51,7 +51,6 @@
 
 (use-package evil-escape
   :ensure t)
-
 
 (use-package ivy
   :ensure t
@@ -107,21 +106,21 @@
 (use-package buffer-move
   :ensure t)
 
-(use-package lispy
-  :ensure t
-  :config
-  (setq lispy-safe-delete t
-        lispy-safe-copy t
-        lispy-safe-paste t
-        lispy-safe-actions-no-pull-delimiters-into-comments t))
+;; (use-package lispy
+;;   :ensure t
+;;   :config
+;;   (setq lispy-safe-delete t
+;;         lispy-safe-copy t
+;;         lispy-safe-paste t
+;;        lispy-safe-actions-no-pull-delimiters-into-comments t))
 
-(use-package lispyville
-  :ensure t
-  ;:init
-  ;(general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
-  :hook
-  (emacs-list-mode . lispyville-mode)
-  (list-mode . lispyville-mode))
+;; (use-package lispyville
+;;   :ensure t
+;;   ;:init
+;;   ;(general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
+;;   :hook
+;;   (emacs-list-mode . lispyville-mode)
+;;   (list-mode . lispyville-mode))
 
 
 (provide 'init-navigation)

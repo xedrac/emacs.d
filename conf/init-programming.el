@@ -14,5 +14,6 @@
 (require 'init-rust)
 (require 'init-bash)
 (require 'init-markdown)
+(require 'init-racket)
 
 (provide 'init-programming)

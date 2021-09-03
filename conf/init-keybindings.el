@@ -22,6 +22,10 @@
   "+"   'text-scale-increase
   "_"   'text-scale-decrease
   "c"   'comment-line
+  "C"   'comment-region
+  "0"   '(lambda () (interactive) (serial-term "/dev/ttyUSB0" 115200))
+  "1"   '(lambda () (interactive) (serial-term "/dev/ttyUSB1" 115200))
+  "2"   '(lambda () (interactive) (serial-term "/dev/ttyUSB2" 115200))
 
   ; files
   "-" 'counsel-fzf
@@ -102,18 +106,18 @@
   ;"r d" 'racket-doc
 
   ; rust
-  "r D" '((lambda () (interactive)
-	    (let ((rustdir "~/projects/rust/"))
-	      (progn (cd rustdir)
-		     (setq default-directory rustdir))))
-	  :which-key "cd ~/projects/rust")
-  "r n" 'cargo-process-new
-  "r r" 'cargo-process-run
-  "r d" 'cargo-process-doc
-  "r t" 'cargo-process-test
-  "r f" 'cargo-process-format
-  "r c" 'cargo-process-clean
-  "r b" 'cargo-process-build
+  ;; "r D" '((lambda () (interactive)
+	    ;; (let ((rustdir "~/projects/rust/"))
+	      ;; (progn (cd rustdir)
+		     ;; (setq default-directory rustdir))))
+	  ;; :which-key "cd ~/projects/rust")
+  ;; "r n" 'cargo-process-new
+  ;; "r r" 'cargo-process-run
+  ;; "r d" 'cargo-process-doc
+  ;; "r t" 'cargo-process-test
+  ;; "r f" 'cargo-process-format
+  ;; "r c" 'cargo-process-clean
+  ;; "r b" 'cargo-process-build
 
   ; magit
   "m d" 'magit-diff-unstaged
@@ -122,6 +126,7 @@
   "m l" 'magit-log-all
   "m s" 'magit-status
   "m c" 'magit-branch-checkout
+  "m b" 'magit-blame
 
   ; TODO debugging
   ; TODO email?
@@ -152,8 +157,8 @@
   "SPC w"  "windows"
   "SPC e"  "eval"
   "SPC s"  "symbols"
-  "SPC r"  "rust"
-  "SPC r c" "cargo"
+  ;"SPC r"  "rust"
+  ;"SPC r c" "cargo"
   "SPC i"  "irc")
 
 

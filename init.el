@@ -21,13 +21,14 @@
 
 ;; For native comp
 (when (fboundp 'native-compile-async)
-  (setq comp-async-jobs-number 4 ;; not using all cores
+  (setq comp-async-jobs-number 15
         comp-deferred-compilation t
         comp-deferred-compilation-black-list '()))
 
 ;;; Add conf folder to the load path
 (add-to-list 'load-path (expand-file-name "conf" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "conf/programming" user-emacs-directory))
+;(load (expand-file-name "~/.roswell/helper.el"))
 
 ;;; Core modules
 (require 'cl-lib)

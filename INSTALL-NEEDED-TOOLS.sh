@@ -22,3 +22,28 @@ cargo xtask install --server
 
 # Install python language server
 pip3 install --user wheel pyls python-language-server[all]
+
+# Install Common Lisp stuff
+sudo dnf install sbcl
+mkdir -p ~/quicklisp
+pushd ~/quicklisp
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+popd
+
+#echo ""
+#echo ""
+#echo "-------------------------------------------------------"
+#echo "Inside the sbcl repl, run the following expressions:"
+#echo ""
+#echo "    (quicklisp-quickstart:install)"
+#echo "    (ql:add-to-init-file)"
+#echo "    (ql:quickload \"quicklisp-slime-helper\")"
+#echo ""
+#echo "-------------------------------------------------------"
+#echo ""
+#echo ""
+#
+#sbcl --load ~/quicklisp/quicklisp.lisp
+
+sbcl --load ~/quicklisp/quicklisp.lisp --eval "(quicklisp-quickstart:install)" --quit
+sbcl --load ~/quicklisp/setup.lisp --eval "(ql:add-to-init-file)" --quit

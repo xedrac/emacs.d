@@ -7,26 +7,29 @@
 ;;(unless package--initialized (package-initialize))
 
 ;;; Install some fundamental packages
-;(defvar my-packages '(use-package general))
-;(defun install-missing-packages ()
-;  (let ((missing (seq-remove (lambda (p) (package-installed-p p)) my-packages)))
-;    (when missing
-;      (package-refresh-contents)
-;      (dolist (p missing)
-;        (package-install p)))))
-;
-;(install-missing-packages)
+(defvar my-packages '(use-package esup))
+(defun install-missing-packages ()
+  (let ((missing (seq-remove (lambda (p) (package-installed-p p)) my-packages)))
+    (when missing
+      (package-refresh-contents)
+      (dolist (p missing)
+        (package-install p)))))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(install-missing-packages)
+
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+
 (eval-when-compile
   (require 'use-package))
-(setq use-package-always-ensure t)
+;(setq use-package-always-ensure t)
 
 ;;; Benchmarking tool for testing purposes
-;(use-package esup
-;  :commands esup)
+(require 'esup)
+; Workaround an issue with esup and byte-compiled cl-lib
+; but this also seems to make it less useful
+;(setq esup-depth 0)
 
 ;;; Define SMB customization group
 (defgroup smb nil "SMB Customization")
@@ -68,15 +71,10 @@
 ;;; Lockfiles unfortunately cause more pain than benefit
 (setq create-lockfiles nil)
 
-;;; Load wheatgrass as the default theme if one is not loaded already
-
-;(if (not custom-enabled-themes)
-;    (load-theme 'wheatgrass t))
-
-(use-package paradox      ; Nice list-packages interface
-  :ensure t
-  :init
-  (paradox-enable))
+;;(use-package paradox      ; Nice list-packages interface
+;;  :ensure t
+;;  :init
+;;  (paradox-enable))
 
 (use-package general      ; Nicer keybinding support with evil
   :ensure t
@@ -85,19 +83,5 @@
 (use-package undo-tree    ; Sane undo/redo behavior
   :ensure t
   :init (global-undo-tree-mode))
-
-(use-package which-key
-  :ensure t
-  :init
-  (which-key-mode)
-  (which-key-setup-minibuffer)
-  ;(which-key-setup-side-window-right)
-  :config
-  (setq which-key-idle-delay 0.3)
-  (setq which-key-max-description-length 27)
-  (setq which-key-add-column-padding 0)
-  ;(setq which-key-max-display-columns nil))
-)
-
 
 (provide 'init-core)
