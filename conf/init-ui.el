@@ -2,8 +2,9 @@
   :ensure t
   :config
   ;; Global settings (defaults)
- (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+(setq doom-themes-enable-bold t ; if nil, bold is universally disabled
+      doom-themes-enable-italic t)
+; if nil, italics is universally disabled
 ;(load-theme 'doom-horizon t)
 ;(load-theme 'doom-dracula t)
 (load-theme 'doom-one t)
@@ -19,7 +20,8 @@
 ;(load-theme 'doom-solarized-dark)
 ;(load-theme 'doom-tomorrow-night)
 ;(load-theme 'doom-wilmersdorf)
-(doom-themes-visual-bell-config))
+;(doom-themes-visual-bell-config)
+)
 
 ;(use-package zenburn-theme
 ;  :ensure t

@@ -122,5 +122,4 @@
 ;;   (emacs-list-mode . lispyville-mode)
 ;;   (list-mode . lispyville-mode))
 
-
 (provide 'init-navigation)

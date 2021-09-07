@@ -132,8 +132,6 @@
   ; TODO email?
   ; TODO org mode?
 
-  )
-
 
 ;; Normal keybindings
 (general-define-key
@@ -187,6 +185,9 @@
 (advice-add 'evil-search-previous :after
   (lambda (&rest x) (evil-scroll-line-to-center (line-number-at-pos))))
 
+;; Allow M-x in serial term
+(eval-after-load 'term
+  '(define-key term-raw-map (kbd "M-x") #'execute-extended-command))
 
 
 ;; describe the elisp function/variable under the cursor (aka point)

@@ -37,5 +37,4 @@
 ;; Disable autosaves
 ; (setq auto-save-default nil)
 
-
 (provide 'init-editing)
