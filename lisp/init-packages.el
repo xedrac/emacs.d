@@ -170,6 +170,9 @@
 (use-package racket-mode
   :ensure t)
 
+(use-package cider
+  :ensure t)
+
 (use-package protobuf-mode
   :ensure t)
 
@@ -178,6 +181,14 @@
 
 (use-package dockerfile-mode
   :ensure t)
+
+(use-package cargo
+  :ensure t)
+
+;; Format on save for rust files
+;(add-hook 'rust-ts-mode-hook
+;          (lambda () 
+;             (add-hook 'before-save-hook 'cargo-process-fmt nil 'local))) ; local save hook for rust
 
 ;(use-package dimmer
 ;  :ensure t

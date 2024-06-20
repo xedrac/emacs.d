@@ -42,7 +42,6 @@
 (defgroup smb nil "SMB Customization")
 
 ;;; Useful Defaults
-;(setq-default cursor-type 'bar)           ; Line-style cursor similar to other text editors
 (setq inhibit-startup-screen t)           ; Disable startup screen
 (setq initial-scratch-message "")         ; Make *scratch* buffer blank
 (setq-default frame-title-format '("%b")) ; Make window title the buffer name
@@ -50,6 +49,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)             ; y-or-n-p makes answering questions faster
 (show-paren-mode 1)                       ; Show closing parens by default
 (setq linum-format "%4d ")                ; Prettify line number format
+(global-auto-revert-mode t)               ; Auto update buffers whose files are changed outside emacs
 (add-hook 'prog-mode-hook                 ; Show line numbers in programming modes
         (if (fboundp 'display-line-numbers-mode)
             #'display-line-numbers-mode
