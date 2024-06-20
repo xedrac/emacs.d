@@ -2,7 +2,7 @@
 
 # Install some system packages
 sudo dnf update --refresh -y 
-sudo dnf install -y clang bear ripgrep fd-find clisp
+sudo dnf install -y clang-devel bear ripgrep fd-find clisp locate ccls
 
 # Install rustup and rust
 if ! command -v rustup &> /dev/null; then

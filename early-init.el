@@ -16,6 +16,11 @@
 ;; larger than the system default.
 (setq frame-inhibit-implied-resize t)
 
+(setq evil-want-keybinding nil)
+
+;; Disable built-in package manager so that we can use elpaca instead
+(setq package-enable-at-startup nil)
+
 ;; Set default font
 ;(set-face-attribute 'default nil
 ;                    ;:family "Ubuntu Mono"

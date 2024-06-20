@@ -4,8 +4,8 @@
   (setq company-tooltip-align-annotations t)
   ;; Reduce the number of characters before company kicks in
   (setq company-minimum-prefix-length 1)
-  ;; Disable automatic popup for completion
-  (setq company-idle-delay 0.5)
+  ;; Delay automatic popup for completion
+  (setq company-idle-delay 0.15)
 
   ;; Reconfigure company to not use M-p and M-n for autocomplete navigation
   (with-eval-after-load 'company
@@ -17,11 +17,10 @@
 
   ;; Set Control-. as autocomplete shortcut
   :bind (("C-." . company-complete))
-  :hook
-  (prog-mode . company-mode))
+  :hook (prog-mode . company-mode))
 
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+;(use-package company-box
+;  :hook (company-mode . company-box-mode))
 
 (provide 'init-company)

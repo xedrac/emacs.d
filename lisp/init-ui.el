@@ -124,6 +124,13 @@
   (all-the-icons-install-fonts)
   (customize-save-variable 'is-all-the-icons-installed t))
 
+;; Add icons to file searches
+(use-package all-the-icons-completion
+  :after (marginalia all-the-icons)
+  :ensure t
+  :init
+  (all-the-icons-completion-mode))
+
 ;; doom-modeline for bottom status bar
 (use-package doom-modeline
       :ensure t
@@ -134,29 +141,56 @@
       ;; Fix symlink bug for emacs
       (setq find-file-visit-truename t))
 
-(use-package neotree
+;(use-package neotree
+;  :ensure t
+;  :config
+;  ;; (global-set-key [f8] 'neotree-toggle)
+;  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+;  (setq neo-window-fixed-size nil))
+
+(use-package treemacs
   :ensure t
   :config
-  ;; (global-set-key [f8] 'neotree-toggle)
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  (setq treemacs-filewatch-mode t
+        treemacs-follow-mode t
+        treemacs-project-follow-mode t
+        treemacs-file-follow-delay 0.0
+        treemacs-follow-after-init t
+        treemacs-expand-after-init t
+        treemacs-litter-directories '("/.venv" "/build" "/.cache" "/eln-cache")
+        treemacs-show-cursor nil
+        treemacs-wide-toggle-width 70
+        treemacs-width 50
+        treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+        treemacs-move-files-by-mouse-dragging t
+        treemacs-missing-project-action 'ask
+        treemacs-find-workspace-method 'find-for-file-or-pick-first
+        treemacs-collapse-dirs 3
+        treemacs-project-follow-cleanup t
+        ;treemacs-git-mode t
+  ))
 
-(defcustom last-neotree-toggled nil
-  "Checks if neotree was last toggled."
-  :group 'smb
-  :type 'boolean)
+;(use-package treemacs-evil
+;  ;:after treemacs
+;  :ensure t)
 
-(global-set-key [f8] (lambda ()
-		       (interactive)
-		       (if last-neotree-toggled
-			   (progn
-			     (customize-save-variable 'last-neotree-toggled nil)
-			     (neotree-hide))
-			 (progn
-			   (customize-save-variable 'last-neotree-toggled t)
-			   (neotree-show)))))
-
-(if last-neotree-toggled
-    (neotree-show))
+;(defcustom last-neotree-toggled nil
+;  "Checks if neotree was last toggled."
+;  :group 'smb
+;  :type 'boolean)
+;
+;(global-set-key [f8] (lambda ()
+;		       (interactive)
+;		       (if last-neotree-toggled
+;			   (progn
+;			     (customize-save-variable 'last-neotree-toggled nil)
+;			     (neotree-hide))
+;			 (progn
+;			   (customize-save-variable 'last-neotree-toggled t)
+;			   (neotree-show)))))
+;
+;(if last-neotree-toggled
+;    (neotree-show))
 
 
 ;; Start fullscreen
@@ -218,8 +252,8 @@
 ;)
 
 ;(set-frame-font "Monospace-14" nil t)
-(set-frame-font "DejaVu Sans Mono-14" nil t)
-;(set-frame-font "Liberation Mono-14" nil t)
+;(set-frame-font "DejaVu Sans Mono-14" nil t)
+(set-frame-font "Liberation Mono-14" nil t)
 ;(set-frame-font "Source Code Pro-14" nil t)
 ;(set-frame-font "Fira Code Regular-14" nil t)
 

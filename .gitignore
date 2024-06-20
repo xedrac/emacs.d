@@ -15,3 +15,12 @@ custom.el
 elpa
 package-quickstart.el
 rust-analyzer
+elpaca
+transient
+tree-sitter
+.cache
+eln-cache
+eshell
+history
+projects
+tutorial

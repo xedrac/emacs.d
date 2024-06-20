@@ -11,10 +11,14 @@
   :states '(normal visual motion)
 
   ; misc
-  "SPC" '(counsel-M-x :which-key "run command")
-  "'"   '((lambda () (interactive) (term "/bin/bash")) :which-key "terminal")
-  "?"   '(general-describe-keybindings :which-key "keybindings")
+  ;"SPC" '(counsel-M-x :which-key "run command")
+  ;"SPC" 'execute-extended-command
+  ;"'"   '(lambda () (interactive) (term "/bin/bash"))
+  "'"   'project-eshell
+  "?"   'general-describe-keybindings
   "`"   '(lambda () (interactive) (find-file "~/.emacs.d/conf/init-keybindings.el"))
+  "~"   '(lambda () (interactive) (find-file "~/.emacs.d/conf/init-packages.el"))
+  "R"   '(lambda() (interactive) (eval-buffer)) ;(load-file user-init-file))
   "e b" 'eval-buffer
   "e s" 'eval-last-sexp
   "e e" 'eval-expression
@@ -28,23 +32,26 @@
   "2"   '(lambda () (interactive) (serial-term "/dev/ttyUSB2" 115200))
 
   ; files
-  "-" 'counsel-fzf
-  "f f" 'counsel-find-file
-  "f g" 'counsel-git
-  "f r" 'counsel-fzf
-  "f e k" '(lambda () (interactive) (find-file "~/.emacs.d/keybindings.el"))
-  "f e d" '(lambda () (interactive) (dired "~/.emacs.d/load.d"))
+  "-" 'consult-locate
+  "o u" 'project-find-file ;'consult-fd
+  "o i" 'consult-ripgrep
+  "o g" 'consult-git-grep
+  "o e" 'consult-buffer
+  ;"f e k" '(lambda () (interactive) (find-file "~/.emacs.d/keybindings.el"))
+  ;"f e d" '(lambda () (interactive) (dired "~/.emacs.d/load.d"))
 
   ; buffers
-  "b b" 'ivy-switch-buffer
+  ;"b b" 'ivy-switch-buffer
+  "b b" 'consult-project-buffer ;'consult-buffer
+  "." 'consult-project-buffer ;'consult-buffer
   "b l" 'list-buffers
   "b N" 'evil-buffer-new
-  "b d" '((lambda () (interactive) (kill-buffer (current-buffer))) :which-key "kill-this-buffer")  ; this works more reliably than 'kill-this-buffer
-  "b q" '((lambda () (interactive) (kill-buffer (current-buffer))) :which-key "kill-this-buffer")
+  "b d" '((lambda () (interactive) (kill-buffer (current-buffer))))  ; this works more reliably than 'kill-this-buffer
+  "b q" '((lambda () (interactive) (kill-buffer (current-buffer))))
   "b n" 'evil-next-buffer
   "b p" 'evil-prev-buffer
   "b s" 'save-buffer
-  "b S" '((lambda () (interactive) (save-some-buffers t)) :which-key "save all")
+  "b S" '((lambda () (interactive) (save-some-buffers t))) ; :which-key "save all")
   "b H" 'buf-move-left
   "b L" 'buf-move-right
   "b J" 'buf-move-down
@@ -64,39 +71,40 @@
   "w -" '(lambda () (interactive) (evil-window-decrease-height 10))
 
   ; project
-  "p f" 'counsel-projectile-find-file
-  "p d" 'counsel-projectile-find-dir
-  "p g" 'counsel-projectile-grep
-  "p a" 'counsel-projectile-ag
-  "p r" 'counsel-projectile-rg
-  "p s" '(lambda () (interactive) (counsel-projectile-ag "-s"))
-  "p b" 'counsel-projectile-switch-to-buffer
-  "p p" 'counsel-projectile-switch-project
+  ;"p f" 'counsel-projectile-find-file
+  ;"p d" 'counsel-projectile-find-dir
+  ;"p g" 'counsel-projectile-grep
+  ;"p a" 'counsel-projectile-ag
+  ;"p r" 'counsel-projectile-rg
+  ;"p s" '(lambda () (interactive) (counsel-projectile-ag "-s"))
+  ;"p b" 'counsel-projectile-switch-to-buffer
+  "p" 'project-switch-project ;'counsel-projectile-switch-project
 
   ; toggles
-  "t n" 'neotree-toggle
+  ;"t s" 'neotree-toggle
+  "t s" 'treemacs
   "t w" 'whitespace-mode
 
   ; help
   "h p" 'describe-point
-  "h f" 'counsel-describe-function
-  "h v" 'counsel-describe-variable
+  "h f" 'describe-function ;'counsel-describe-function
+  "h v" 'describe-variable ;'counsel-describe-variable
   "h k" 'describe-key
 
-  ; lsp symbol stuff
-  "s ." 'xref-find-definitions
-  "s o" 'xref-find-definitions-other-window
-  "s p" 'lsp-ui-peek-find-definitions
-  "s '" 'lsp-ui-peek-find-references
-  "s ," 'lsp-ui-peek--goto-xref-other-window
-  ;"s ," 'lsp-ui-peek--goto-xref
+  ;; lsp symbol stuff
+  ;"s ." 'xref-find-definitions
+  ;"s o" 'xref-find-definitions-other-window
+  ;"s p" 'lsp-ui-peek-find-definitions
+  ;"s '" 'lsp-ui-peek-find-references
+  ;"s ," 'lsp-ui-peek--goto-xref-other-window
+  ;;"s ," 'lsp-ui-peek--goto-xref
 
-  ;"s '" 'xref-find-references
-  "s r" 'lsp-rename
+  ;;"s '" 'xref-find-references
+  ;"s r" 'lsp-rename
 
-  ; chat/irc/slack
-  "i f" '((lambda () (interactive) (irc-freenode-connect)) :which-key "Freenode")
-  "i b" '((lambda () (interactive) (erc-switch-to-buffer)) :which-key "ERC switch buffer")
+  ;; chat/irc/slack
+  ;"i f" '((lambda () (interactive) (irc-freenode-connect)) :which-key "Freenode")
+  ;"i b" '((lambda () (interactive) (erc-switch-to-buffer)) :which-key "ERC switch buffer")
 
   ; racket
   ;"r R" 'racket-run
@@ -119,24 +127,25 @@
   ;; "r c" 'cargo-process-clean
   ;; "r b" 'cargo-process-build
 
-  ; magit
-  "m d" 'magit-diff-unstaged
-  "m D" 'magit-diff-buffer-file
-  "m g" 'magit-diff-staged
-  "m l" 'magit-log-all
-  "m s" 'magit-status
-  "m c" 'magit-branch-checkout
-  "m b" 'magit-blame
+;  ; magit
+;  "m d" 'magit-diff-unstaged
+;  "m D" 'magit-diff-buffer-file
+;  "m g" 'magit-diff-staged
+;  "m l" 'magit-log-all
+;  "m s" 'magit-status
+;  "m c" 'magit-branch-checkout
+;  "m b" 'magit-blame
+)
 
   ; TODO debugging
   ; TODO email?
   ; TODO org mode?
 
-
 ;; Normal keybindings
 (general-define-key
   :states '(normal visual motion)
-  "/" 'swiper)
+  "/" 'consult-line)
+  ;"/" 'swiper)
 
 
 ;; Swap ; and : for convenience
@@ -145,38 +154,48 @@
   ";" 'evil-ex
   ":" 'evil-repeat-find-char)
 
-;; Rename the which-key prefixes
-(which-key-add-key-based-replacements
-  "SPC b"  "buffers"
-  "SPC f"  "files"
-  "SPC h"  "help"
-  "SPC p"  "projects"
-  "SPC t"  "toggles"
-  "SPC w"  "windows"
-  "SPC e"  "eval"
-  "SPC s"  "symbols"
-  ;"SPC r"  "rust"
-  ;"SPC r c" "cargo"
-  "SPC i"  "irc")
+;;; Rename the which-key prefixes
+;(which-key-add-key-based-replacements
+;  "SPC b"  "buffers"
+;  "SPC f"  "files"
+;  "SPC h"  "help"
+;  "SPC p"  "projects"
+;  "SPC t"  "toggles"
+;  "SPC w"  "windows"
+;  "SPC e"  "eval"
+;  "SPC s"  "symbols"
+;  ;"SPC r"  "rust"
+;  ;"SPC r c" "cargo"
+;  "SPC i"  "irc")
 
 
 ;; Global keybindings
-; (general-define-key
-; "\C-s" (lambda () (save-buffer 't))
-; "\C-S" (lambda () (save-some-buffers 't)))
+;(general-define-key
+;  "\C-s" (lambda () (save-buffer 't))
+;  "\C-S" (lambda () (save-some-buffers 't)))
 
-(general-define-key "C->" 'indent-rigidly-right-to-tab-stop)
-(general-define-key "C-<" 'indent-rigidly-left-to-tab-stop)
+;(general-define-key "C->" 'indent-rigidly-right-to-tab-stop)
+;(general-define-key "C-<" 'indent-rigidly-left-to-tab-stop)
+
+(general-define-key
+  :states '(motion normal)
+  ;">" 'indent-rigidly-right-to-tab-stop)
+  ">" 'indent-rigidly-right)
+
+(general-define-key
+  :states '(motion normal)
+  ;"<" 'indent-rigidly-left-to-tab-stop)
+  "<" 'indent-rigidly-left)
 
 
 ;; Rapid key sequences for insert mode
-(use-package key-seq
-  :ensure t
-  :init
-  (key-chord-mode 1)
-  :config
-  (key-seq-define evil-insert-state-map "qs" #'save-buffer)
-  (key-seq-define evil-insert-state-map "hc" #'evil-escape))
+;(use-package key-seq
+;  :ensure t
+;  :init
+;  (key-chord-mode 1)
+;  :config
+;  (key-seq-define evil-insert-state-map "qs" #'save-buffer)
+;  (key-seq-define evil-insert-state-map "hc" #'evil-escape))
 
 
 ;; Center active search highlight

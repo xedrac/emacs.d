@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; GC and other startup optimizations
 
 ;; A big contributor to startup times is garbage collection.  We up the GC
@@ -26,21 +28,31 @@
         comp-deferred-compilation-black-list '()))
 
 ;;; Add conf folder to the load path
-(add-to-list 'load-path (expand-file-name "conf" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "conf/programming" user-emacs-directory))
+(add-to-list 'load-path "~/.emacs.d/lisp")
+;(add-to-list 'load-path "~/.emacs.d/conf")
+;(add-to-list 'load-path "~/.emacs.d/conf/programming")
+;(add-to-list 'load-path (expand-file-name "conf" user-emacs-directory))
 ;(load (expand-file-name "~/.roswell/helper.el"))
+
+;;; Package installer setup
+(require 'elpaca-bootstrap)
 
 ;;; Core modules
 (require 'cl-lib)
+(require 'eglot)
+(require 'treesit)
+
 (require 'init-core)
 (require 'init-ui)
-(require 'init-editing)
+;(require 'init-treesitter)
+;(require 'init-editing)
 
 ;;; Helper modules
-(require 'init-company)
-(require 'init-flycheck)
-(require 'init-lsp)
-(require 'init-programming)  ;; languages
+(require 'init-packages)
+;(require 'init-company)
+;(require 'init-flycheck)
+;(require 'init-lsp)
+;(require 'init-programming)
 (require 'init-navigation)
 (require 'init-keybindings)
 
