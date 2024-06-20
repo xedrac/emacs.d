@@ -20,17 +20,16 @@
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)  ; Same as ^^^
 ;(add-hook 'haskell-mode-hook 'eglot-ensure)
 
-
 ;; Convenient keybinding support for evil
 (use-package general
   :ensure t)
 (elpaca-wait)
 
 
-;; Sane undo/redo behavior
-(use-package undo-tree
-  :ensure t
-  :init (global-undo-tree-mode))
+;;; Different undo/redo behavior
+;(use-package undo-tree
+;  :ensure t
+;  :init (global-undo-tree-mode))
 
 
 ;; Completion ui
@@ -129,6 +128,7 @@
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
+
 
 
 ;; Auto complete (works with eglot to get candidates)

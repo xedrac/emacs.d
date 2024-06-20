@@ -141,12 +141,6 @@
       ;; Fix symlink bug for emacs
       (setq find-file-visit-truename t))
 
-;(use-package neotree
-;  :ensure t
-;  :config
-;  ;; (global-set-key [f8] 'neotree-toggle)
-;  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-;  (setq neo-window-fixed-size nil))
 
 (use-package treemacs
   :ensure t
@@ -173,25 +167,6 @@
 ;(use-package treemacs-evil
 ;  ;:after treemacs
 ;  :ensure t)
-
-;(defcustom last-neotree-toggled nil
-;  "Checks if neotree was last toggled."
-;  :group 'smb
-;  :type 'boolean)
-;
-;(global-set-key [f8] (lambda ()
-;		       (interactive)
-;		       (if last-neotree-toggled
-;			   (progn
-;			     (customize-save-variable 'last-neotree-toggled nil)
-;			     (neotree-hide))
-;			 (progn
-;			   (customize-save-variable 'last-neotree-toggled t)
-;			   (neotree-show)))))
-;
-;(if last-neotree-toggled
-;    (neotree-show))
-
 
 ;; Start fullscreen
 ;(add-hook 'window-setup-hook #'toggle-frame-fullscreen)

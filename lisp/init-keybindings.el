@@ -11,13 +11,12 @@
   :states '(normal visual motion)
 
   ; misc
-  ;"SPC" '(counsel-M-x :which-key "run command")
-  ;"SPC" 'execute-extended-command
+  "SPC" 'execute-extended-command
   ;"'"   '(lambda () (interactive) (term "/bin/bash"))
   "'"   'project-eshell
   "?"   'general-describe-keybindings
-  "`"   '(lambda () (interactive) (find-file "~/.emacs.d/conf/init-keybindings.el"))
-  "~"   '(lambda () (interactive) (find-file "~/.emacs.d/conf/init-packages.el"))
+  "`"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-keybindings.el"))
+  "~"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-packages.el"))
   "R"   '(lambda() (interactive) (eval-buffer)) ;(load-file user-init-file))
   "e b" 'eval-buffer
   "e s" 'eval-last-sexp
@@ -43,7 +42,6 @@
   ; buffers
   ;"b b" 'ivy-switch-buffer
   "b b" 'consult-project-buffer ;'consult-buffer
-  "." 'consult-project-buffer ;'consult-buffer
   "b l" 'list-buffers
   "b N" 'evil-buffer-new
   "b d" '((lambda () (interactive) (kill-buffer (current-buffer))))  ; this works more reliably than 'kill-this-buffer
