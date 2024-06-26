@@ -31,6 +31,10 @@
 ;  :ensure t
 ;  :init (global-undo-tree-mode))
 
+;; Visualize the undo tree (vundo)
+(use-package vundo
+  :ensure t)
+
 
 ;; Completion ui
 (use-package vertico
@@ -82,8 +86,7 @@
     consult-bookmark consult-recent-file consult-xref
     consult--source-bookmark consult--source-file-register
     consult--source-recent-file consult--source-project-recent-file
-    :preview-key '(:debounce 0.0 any))
-  )
+    :preview-key '(:debounce 0.0 any)))
 
 
 ;; Allow specifying substrings instead of having to tab complete from the beginning in Vertico
@@ -131,21 +134,69 @@
 
 
 
-;; Auto complete (works with eglot to get candidates)
-(use-package company
+;;; Auto complete (works with eglot to get candidates)
+;(use-package company
+;  :ensure t
+;  :config
+;  (setq company-tooltip-align-annotations t)  ; ocd
+;  (setq company-minimum-prefix-length 1)      ; reduce needed chars before company kicks in
+;  (setq company-idle-delay 0)                 ; no delay for automatic popup
+;  (setq company-selection-wrap-around t)
+;  (with-eval-after-load 'company
+;    (define-key company-active-map (kbd "C-n") 'company-select-next)
+;    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+;    (define-key company-search-map (kbd "C-n") 'company-select-next)
+;    (define-key company-search-map (kbd "C-p") 'company-select-previous)
+;    (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
+;  :bind (("C-." . company-complete))
+;  :hook (prog-mode . company-mode)
+
+
+(use-package corfu
   :ensure t
-  :config
-  (setq company-tooltip-align-annotations t)  ; ocd
-  (setq company-minimum-prefix-length 1)      ; reduce needed chars before company kicks in
-  (setq company-idle-delay 0.15)              ; delay automatic popup
-  (with-eval-after-load 'company
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous)
-    (define-key company-search-map (kbd "C-n") 'company-select-next)
-    (define-key company-search-map (kbd "C-p") 'company-select-previous)
-    (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
-  :bind (("C-." . company-complete))
-  :hook (prog-mode . company-mode))
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-auto-delay 0)           ;; 0 is not recommended
+  (corfu-auto-prefix 1)          ;; 1 is not recommended
+  (corfu-separator ?\s)          ;; Orderless field separator
+  ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;;(corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;;(corfu-preview-current nil)    ;; Disable current candidate preview
+  ;;(corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;;(corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;;(corfu-scroll-margin 5)        ;; Use scroll margin
+
+  ;; Enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
+  :init
+  (global-corfu-mode))
+
+
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; TAB cycle if there are only few candidates
+  ;; (setq completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (setq tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; try `cape-dict'.
+  ;(setq text-mode-ispell-word-completion nil)
+
+  ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
+  ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
+  ;; setting is useful beyond Corfu.
+  (setq read-extended-command-predicate #'command-completion-default-include-p))
 
 
 ;; Indent code somewhat sanely when pasting
@@ -170,6 +221,9 @@
 (use-package racket-mode
   :ensure t)
 
+(use-package clojure-mode
+  :ensure t)
+
 (use-package cider
   :ensure t)
 
@@ -185,39 +239,31 @@
 (use-package cargo
   :ensure t)
 
+;;; Remove trailing whitespace on lines you've edited
+;(use-package ws-butler
+;  :ensure t
+;  :config
+;  (ws-butler-global-mode t))
+
+;(use-package ethan-wspace
+;  :ensure t
+;  :config
+;  (global-ethan-wspace-mode 1))
+
 ;; Format on save for rust files
 ;(add-hook 'rust-ts-mode-hook
-;          (lambda () 
+;          (lambda ()
 ;             (add-hook 'before-save-hook 'cargo-process-fmt nil 'local))) ; local save hook for rust
 
 ;(use-package dimmer
 ;  :ensure t
 ;  :config (dimmer-mode t))
 
-;(use-package blink-search
-;  :straight (blink-search :host github
-;                          :repo "manateelazycat/blink-search"))
-;                          ;:files (:defaults (:exclude "*.el.in"))))
-
-
-
-;(use-package company-box
-;  :hook (company-mode . company-box-mode))
-
-
-
-;; Faster lsp interaction
-;(use-package eglot-booster
-;  :after eglot
-;  :ensure t
-;  :config
-;  (eglot-booster-mode))
-
 ;(use-package nerd-icons-completion
 ;  :ensure t
 ;  :after marginalia
 ;  :config
 ;  (nerd-icons-completion-mode))
-   
+
 
 (provide 'init-packages)

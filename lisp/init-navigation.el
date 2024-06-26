@@ -19,10 +19,11 @@
   (setq evil-replace-state-cursor '("red" bar))
   (setq evil-operator-state-cursor '("red" hollow))
 
-  (general-define-key
-    :states 'motion
-    ";" 'evil-ex
-    ":" 'evil-repeat-find-char))
+(general-define-key
+  :states 'motion
+  ";" 'evil-ex
+  ;; ":" 'evil-repeat-find-char
+  ))
 
 
 (use-package evil-collection
@@ -34,23 +35,8 @@
 (use-package evil-escape
   :ensure t)
 
+
 ;(use-package buffer-move
 ;  :ensure t)
-
-;; (use-package lispy
-;;   :ensure t
-;;   :config
-;;   (setq lispy-safe-delete t
-;;         lispy-safe-copy t
-;;         lispy-safe-paste t
-;;        lispy-safe-actions-no-pull-delimiters-into-comments t))
-
-;; (use-package lispyville
-;;   :ensure t
-;;   ;:init
-;;   ;(general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
-;;   :hook
-;;   (emacs-list-mode . lispyville-mode)
-;;   (list-mode . lispyville-mode))
 
 (provide 'init-navigation)

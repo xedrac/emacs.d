@@ -40,8 +40,8 @@
   ;"f e d" '(lambda () (interactive) (dired "~/.emacs.d/load.d"))
 
   ; buffers
-  ;"b b" 'ivy-switch-buffer
-  "b b" 'consult-project-buffer ;'consult-buffer
+  "b a" 'consult-buffer
+  "b b" 'consult-project-buffer
   "b l" 'list-buffers
   "b N" 'evil-buffer-new
   "b d" '((lambda () (interactive) (kill-buffer (current-buffer))))  ; this works more reliably than 'kill-this-buffer
@@ -90,14 +90,15 @@
   "h k" 'describe-key
 
   ;; lsp symbol stuff
-  ;"s ." 'xref-find-definitions
-  ;"s o" 'xref-find-definitions-other-window
+  "s ," 'xref-find-definitions
+  "s ." 'xref-find-definitions-other-window
+  "s o" 'xref-go-back
+  "s r" 'xref-find-references
+  "s c" 'xref-find-references-and-replace
   ;"s p" 'lsp-ui-peek-find-definitions
   ;"s '" 'lsp-ui-peek-find-references
   ;"s ," 'lsp-ui-peek--goto-xref-other-window
   ;;"s ," 'lsp-ui-peek--goto-xref
-
-  ;;"s '" 'xref-find-references
   ;"s r" 'lsp-rename
 
   ;; chat/irc/slack
@@ -147,10 +148,10 @@
 
 
 ;; Swap ; and : for convenience
-(general-define-key
-  :states 'motion
-  ";" 'evil-ex
-  ":" 'evil-repeat-find-char)
+;; (general-define-key
+;; ;;   :states 'motion
+;; ;;   ";" 'evil-ex
+;; ;;   ":" 'evil-repeat-find-char)
 
 ;;; Rename the which-key prefixes
 ;(which-key-add-key-based-replacements

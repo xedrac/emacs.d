@@ -144,9 +144,11 @@
 
 (use-package treemacs
   :ensure t
+  :after evil
   :config
   (setq treemacs-filewatch-mode t
         treemacs-follow-mode t
+        treemacs-display-current-project-exclusively t
         treemacs-project-follow-mode t
         treemacs-file-follow-delay 0.0
         treemacs-follow-after-init t
@@ -164,9 +166,9 @@
         ;treemacs-git-mode t
   ))
 
-;(use-package treemacs-evil
-;  ;:after treemacs
-;  :ensure t)
+(use-package treemacs-evil
+  :after treemacs
+  :ensure t)
 
 ;; Start fullscreen
 ;(add-hook 'window-setup-hook #'toggle-frame-fullscreen)
@@ -202,8 +204,6 @@
 (setq inhibit-startup-screen t)      ; don't show splash screen
 (setq ring-bell-function 'ignore)    ; disable that obnoxious noise
 ;(setq visible-bell nil)              ; don't flash the screen either
-(setq require-final-newline t)       ; add newline to end of file if necessary
-(setq show-trailing-whitespace t)    ; show trailing whitespace
 (setq scroll-margin 3)
 (setq scroll-conservatively 9999)
 (setq auto-window-vscroll nil)

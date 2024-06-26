@@ -17,6 +17,7 @@
 (setq frame-inhibit-implied-resize t)
 
 (setq evil-want-keybinding nil)
+;(setq mode-require-final-newline nil)
 
 ;; Disable built-in package manager so that we can use elpaca instead
 (setq package-enable-at-startup nil)
