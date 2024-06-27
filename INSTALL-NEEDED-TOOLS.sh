@@ -7,10 +7,11 @@ OS=$(cat /etc/os-release | rg ^ID= | cut -d= -f2)
 
 if [ "$OS" = "fedora" ]; then
     sudo dnf update --refresh -y
-    sudo dnf install -y clang-devel bear ripgrep fd-find clisp locate ccls
+    sudo dnf install -y emacs clang-devel bear ripgrep fd-find clisp locate ccls
 elif [ "$OS" = "ubuntu" ]; then
     sudo apt-get update -y
     sudo apt-get install -y clangd-15 ripgrep fd-find plocate #ccls
+    snap install --classic emacs
 fi
 
 # Install rustup and rust
@@ -56,3 +57,12 @@ popd
 
 sbcl --load ~/quicklisp/quicklisp.lisp --eval "(quicklisp-quickstart:install)" --quit
 sbcl --load ~/quicklisp/setup.lisp --eval "(ql:add-to-init-file)" --quit
+
+
+echo "----------------------------------------------"
+echo "When running for the first time, make sure to:"
+echo ""
+echo "  M-x all-the-icons-install-fonts"
+echo "  M-x treesit-auto-install-all"
+echo "----------------------------------------------"
+echo ""
