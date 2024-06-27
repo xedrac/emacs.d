@@ -115,14 +115,14 @@
 (use-package all-the-icons
   :ensure t)
 
-(defcustom is-all-the-icons-installed nil
-  "DO NOT EDIT. Checks if all-the-icons fonts are installed yet."
-  :group 'smb
-  :type 'boolean)
-
-(unless is-all-the-icons-installed
-  (all-the-icons-install-fonts)
-  (customize-save-variable 'is-all-the-icons-installed t))
+;(defcustom is-all-the-icons-installed nil
+;  "DO NOT EDIT. Checks if all-the-icons fonts are installed yet."
+;  :group 'smb
+;  :type 'boolean)
+;
+;(unless is-all-the-icons-installed
+;  (all-the-icons-install-fonts)
+;  (customize-save-variable 'is-all-the-icons-installed t))
 
 ;; Add icons to file searches
 (use-package all-the-icons-completion
