@@ -1,8 +1,17 @@
+#!/usr/bin/env bash
 # You'll need to manually install some tools to get everything working
 
+
 # Install some system packages
-sudo dnf update --refresh -y 
-sudo dnf install -y clang-devel bear ripgrep fd-find clisp locate ccls
+OS=$(cat /etc/os-release | rg ^ID= | cut -d= -f2)
+
+if [ "$OS" = "fedora" ]; then
+    sudo dnf update --refresh -y
+    sudo dnf install -y clang-devel bear ripgrep fd-find clisp locate ccls
+elif [ "$OS" = "ubuntu" ]; then
+    sudo apt-get update -y
+    sudo apt-get install -y clangd-15 ripgrep fd-find plocate #ccls
+fi
 
 # Install rustup and rust
 if ! command -v rustup &> /dev/null; then
