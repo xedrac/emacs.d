@@ -82,6 +82,7 @@
 ))
 
 (require 'init-core)
+(require 'init-navigation)
 (require 'init-ui)
 (require 'init-editing)
 
@@ -90,7 +91,6 @@
 ;(require 'init-company)
 ;(require 'init-flycheck)
 ;(require 'init-lsp)
-(require 'init-navigation)
 (require 'init-keybindings)
 
 (provide 'init)

@@ -8,16 +8,12 @@
                ;'((c-mode c-ts-mode c++-mode c++-ts-mode) . ("ccls" "--init" "{\"compilationDatabaseDirectory\": \"build\"}"))))
                '((c-mode c-ts-mode c++-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\""))))
 
+;; Start eglot/lsp automatically when entering these programming modes
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)
-
-
-;; Start eglot/lsp automatically when entering these programming modes
 (add-hook 'rust-ts-mode-hook 'eglot-ensure) ; Installs rust-analyzer automatically I think
-(add-hook 'c-mode-hook 'eglot-ensure)    ; Requires clangd to be installed already
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)  ; Same as ^^^
 ;(add-hook 'haskell-mode-hook 'eglot-ensure)
 
 ;; Convenient keybinding support for evil
@@ -25,13 +21,8 @@
   :ensure t)
 (elpaca-wait)
 
-
-;;; Different undo/redo behavior
-;(use-package undo-tree
-;  :ensure t
-;  :init (global-undo-tree-mode))
-
 ;; Visualize the undo tree (vundo)
+
 (use-package vundo
   :ensure t)
 
@@ -133,25 +124,7 @@
   (global-treesit-auto-mode))
 
 
-
-;;; Auto complete (works with eglot to get candidates)
-;(use-package company
-;  :ensure t
-;  :config
-;  (setq company-tooltip-align-annotations t)  ; ocd
-;  (setq company-minimum-prefix-length 1)      ; reduce needed chars before company kicks in
-;  (setq company-idle-delay 0)                 ; no delay for automatic popup
-;  (setq company-selection-wrap-around t)
-;  (with-eval-after-load 'company
-;    (define-key company-active-map (kbd "C-n") 'company-select-next)
-;    (define-key company-active-map (kbd "C-p") 'company-select-previous)
-;    (define-key company-search-map (kbd "C-n") 'company-select-next)
-;    (define-key company-search-map (kbd "C-p") 'company-select-previous)
-;    (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
-;  :bind (("C-." . company-complete))
-;  :hook (prog-mode . company-mode)
-
-
+;; Show completion candidates in a popup (like company)
 (use-package corfu
   :ensure t
   :custom
@@ -239,16 +212,8 @@
 (use-package cargo
   :ensure t)
 
-;;; Remove trailing whitespace on lines you've edited
-;(use-package ws-butler
-;  :ensure t
-;  :config
-;  (ws-butler-global-mode t))
-
-;(use-package ethan-wspace
-;  :ensure t
-;  :config
-;  (global-ethan-wspace-mode 1))
+(use-package haskell-mode
+  :ensure t)
 
 ;; Format on save for rust files
 ;(add-hook 'rust-ts-mode-hook

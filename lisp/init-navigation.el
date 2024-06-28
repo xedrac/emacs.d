@@ -2,6 +2,7 @@
 ;; vim emulation
 (use-package evil
   :ensure t
+  :demand t
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
