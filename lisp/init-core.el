@@ -1,42 +1,4 @@
-;;; Setup package.el
-;(require 'package)
-;(setq package-quickstart t)
-
-;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-
-;(when (version< emacs-version "27.0")
-;  (package-initialize))
-
-;;;  Uncomment this the first time you run emacs on a new machine
-;(unless package-archive-contents
-;  (package-refresh-contents))
-;
-;;;; Install some fundamental packages
-;(defvar my-packages '(esup))
-;(defun install-missing-packages ()
-;  (let ((missing (seq-remove (lambda (p) (package-installed-p p)) my-packages)))
-;    (when missing
-;      (package-refresh-contents)
-;      (dolist (p missing)
-;        (package-install p)))))
-;
-;(install-missing-packages)
-
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-
-;; use-package is built-in emacs 29
-;(eval-when-compile
-;  (require 'use-package))
-;;(setq use-package-always-ensure t)
-
-;;; Benchmarking tool for testing purposes
-;(require 'esup)
-;; Workaround an issue with esup and byte-compiled cl-lib
-;; but this also seems to make it less useful
-;(setq esup-depth 0)
+;; -*- lexical-binding: t; -*-
 
 ;;; Define SMB customization group
 (defgroup smb nil "SMB Customization")
@@ -50,10 +12,47 @@
 (show-paren-mode 1)                       ; Show closing parens by default
 (setq linum-format "%4d ")                ; Prettify line number format
 (global-auto-revert-mode t)               ; Auto update buffers whose files are changed outside emacs
-(add-hook 'prog-mode-hook                 ; Show line numbers in programming modes
-        (if (fboundp 'display-line-numbers-mode)
-            #'display-line-numbers-mode
-            #'linum-mode))
+;(add-hook 'prog-mode-hook                 ; Show line numbers in programming modes
+;        (if (fboundp 'display-line-numbers-mode)
+;            #'display-line-numbers-mode
+;            #'linum-mode))
+
+(global-auto-revert-mode)                 ; Automatically update buffer if file changes outside emacs
+
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))  ; remove some gui elements
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+;(setq-default line-spacing 0.2)
+(setq-default indent-tabs-mode nil)  ; indent with spaces by default
+
+;;; Start fullscreen
+;(add-hook 'window-setup-hook #'toggle-frame-fullscreen)
+(custom-set-variables
+  '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+;;; Extra config
+(setq x-select-enable-clipboard t)
+(setq x-select-enable-primary t)
+(setq save-interprogram-paste-before-kill t)
+(setq apropos-do-all t)
+(setq mouse-yank-at-point t)
+(setq inhibit-startup-screen t)      ; don't show splash screen
+(setq ring-bell-function 'ignore)    ; disable that obnoxious noise
+;(setq visible-bell nil)              ; don't flash the screen either
+(setq scroll-margin 3)
+(setq scroll-conservatively 9999)
+(setq auto-window-vscroll nil)
+;(setq linum-format "%4d" column-number-mode t)  ; Line number format
+;(setq global-linum-mode t)                     ; Show line numbers in the buffers
+;(setq compilation-scroll-output 'first-error)  ; scroll until the first error
+;(setq gc-cons-threshold 100000000)             ; make garbage collection stalls much less frequent
+(setq read-process-output-max (* 512 1024))     ; increase process read limits for better lsp performance
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+;(blink-cursor-mode t)
+;(set-cursor-color "#cccccc")
+(setq font-lock-maximum-decoration 2)
 
 
 ;;; Offload the custom-set-variables to a separate file
@@ -83,9 +82,34 @@
 (prefer-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 
-;;(use-package paradox      ; Nice list-packages interface
-;;  :ensure t
-;;  :init
-;;  (paradox-enable))
+;;; Remember line when you revisit a file
+(setq-default save-place t)
+(setq save-place-file (concat user-emacs-directory "places"))
+(setq delete-active-region t)
+
+(setq require-final-newline t)       ; add newline to end of file if necessary
+(setq show-trailing-whitespace t)    ; show trailing whitespace
+
+;;; Delete trailing whitespace on save in programming modes
+(add-hook 'prog-mode-hook
+          (lambda () (add-hook 'before-save-hook
+                               (lambda () (delete-trailing-whitespace)
+                               nil 'local))))
+
+;;; Save last session
+;(desktop-save-mode 1)
+
+;;; No text wrapping
+(set-default 'truncate-lines t)
+
+(setq c-default-style "k&r")
+(setq c-ts-mode-indent-offset 4)
+
+
+;(set-frame-font "Monospace-14" nil t)
+;(set-frame-font "DejaVu Sans Mono-14" nil t)
+;(set-frame-font "Liberation Mono-14" nil t)
+;(set-frame-font "Source Code Pro-14" nil t)
+(set-frame-font "FiraCode NF-14" nil t)
 
 (provide 'init-core)

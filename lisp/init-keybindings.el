@@ -13,11 +13,11 @@
   ; misc
   "SPC" 'execute-extended-command
   ;"'"   '(lambda () (interactive) (term "/bin/bash"))
-  "'"   'project-eshell
+  "'"   'term ;'project-eshell
   "?"   'general-describe-keybindings
   "`"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-keybindings.el"))
   "~"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-packages.el"))
-  "R"   '(lambda() (interactive) (eval-buffer)) ;(load-file user-init-file))
+  "R"   '(lambda() (interactive) (load-file user-init-file))
   "e b" 'eval-buffer
   "e s" 'eval-last-sexp
   "e e" 'eval-expression
@@ -32,7 +32,8 @@
 
   ; files
   "-" 'consult-locate
-  "o u" 'project-find-file ;'consult-fd
+  ;"o u" 'project-find-file ;'consult-fd
+  "o u" 'consult-fd
   "o i" 'consult-ripgrep
   "o g" 'consult-git-grep
   "o e" 'consult-buffer
@@ -147,11 +148,11 @@
   ;"/" 'swiper)
 
 
-;; Swap ; and : for convenience
-;; (general-define-key
-;; ;;   :states 'motion
-;; ;;   ";" 'evil-ex
-;; ;;   ":" 'evil-repeat-find-char)
+;;; Swap ; and : for convenience
+(general-define-key
+  :states 'normal
+  ";" 'evil-ex
+  ":" 'evil-repeat-find-char)
 
 ;;; Rename the which-key prefixes
 ;(which-key-add-key-based-replacements
@@ -220,19 +221,19 @@ This checks in turn:
     (let (sym)
     ;; sigh, function-at-point is too clever.  we want only the first half.
     (cond ((setq sym (ignore-errors
-			(with-syntax-table emacs-lisp-mode-syntax-table
-			    (save-excursion
-			    (or (not (zerop (skip-syntax-backward "_w")))
-				(eq (char-syntax (char-after (point))) ?w)
-				(eq (char-syntax (char-after (point))) ?_)
-				(forward-sexp -1))
-			    (skip-chars-forward "`'")
-			    (let ((obj (read (current-buffer))))
-				(and (symbolp obj) (fboundp obj) obj))))))
-	    (describe-function sym))
-	    ((setq sym (variable-at-point)) (describe-variable sym))
-	    ;; now let it operate fully -- i.e. also check the
-	    ;; surrounding sexp for a function call.
-	    ((setq sym (function-at-point)) (describe-function sym)))))
+        (with-syntax-table emacs-lisp-mode-syntax-table
+            (save-excursion
+                (or (not (zerop (skip-syntax-backward "_w")))
+                (eq (char-syntax (char-after (point))) ?w)
+                (eq (char-syntax (char-after (point))) ?_)
+                (forward-sexp -1))
+                (skip-chars-forward "`'")
+                (let ((obj (read (current-buffer))))
+                (and (symbolp obj) (fboundp obj) obj))))))
+        (describe-function sym))
+        ((setq sym (variable-at-point)) (describe-variable sym))
+        ;; now let it operate fully -- i.e. also check the
+        ;; surrounding sexp for a function call.
+        ((setq sym (function-at-point)) (describe-function sym)))))
 
 (provide 'init-keybindings)

@@ -1,42 +1,40 @@
-;;
-;; TODO:
-;;    Consider adding lispyville, blink-search, and eglot-x packages
-;;
+;; -*- lexical-binding: t; -*-
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               ;'((c-mode c-ts-mode c++-mode c++-ts-mode) . ("ccls" "--init" "{\"compilationDatabaseDirectory\": \"build\"}"))))
-               '((c-mode c-ts-mode c++-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\""))))
+;(with-eval-after-load 'eglot
+;(use-package eglot
+;  :ensure t
+;  :hook ((rust-mode rust-ts-mode c-mode c-ts-mode c++-mode c++-ts-mode python-mode python-ts-mode haskell-mode) . eglot-ensure))
+;  ;(add-to-list 'eglot-server-programs
+;  ;             ;'((c-mode c-ts-mode c++-mode c++-ts-mode) . ("ccls" "--init" "{\"compilationDatabaseDirectory\": \"build\"}"))))
+;  ;             '((c-mode c-ts-mode c++-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\""))
+;  ;             '((rust-mode rust-ts-mode) . ("rust-analyzer"))))
 
+;;; Start eglot/lsp automatically when entering these programming modes
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)
-
-
-;; Start eglot/lsp automatically when entering these programming modes
-(add-hook 'rust-ts-mode-hook 'eglot-ensure) ; Installs rust-analyzer automatically I think
 (add-hook 'c-mode-hook 'eglot-ensure)    ; Requires clangd to be installed already
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)  ; Same as ^^^
-;(add-hook 'haskell-mode-hook 'eglot-ensure)
+(add-hook 'haskell-mode-hook 'eglot-ensure)
+(add-hook 'rust-mode 'eglot-ensure)
+(add-hook 'rust-ts-mode 'eglot-ensure)
 
-;; Convenient keybinding support for evil
+;;; Convenient keybinding support for evil
 (use-package general
   :ensure t)
 (elpaca-wait)
-
 
 ;;; Different undo/redo behavior
 ;(use-package undo-tree
 ;  :ensure t
 ;  :init (global-undo-tree-mode))
 
-;; Visualize the undo tree (vundo)
+;;; Visualize the undo tree (vundo)
 (use-package vundo
   :ensure t)
 
-
-;; Completion ui
+;;; Completion ui
 (use-package vertico
   :ensure t
   :bind (:map minibuffer-local-map
@@ -49,36 +47,36 @@
   :init
   (vertico-mode))
 
+;;; Show recent commands/files at the top
+(require 'savehist)
+(savehist-mode)
 
-;; Show recent commands/files at the top
-(use-package savehist
-  :init
-  (savehist-mode))
-
-
-;; Add context to results in the margins (file permissions, dates, help info, etc...)
+;;; Add context to results in the margins (file permissions, dates, help info, etc...)
 (use-package marginalia
-  :after (vertico)
   :ensure t
+  :after vertico
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
   :init
   (marginalia-mode))
 
+;;; Project level commands (switch project roots, find files, grep, etc...)
+;(use-package project
+;  :ensure t)
 
-;; Project level commands (switch project roots, find files, grep, etc...)
-(use-package project)
-
-
-;; Provides ripgrep and file finding
+;;; Provides ripgrep and file finding
 (use-package consult
+  :ensure t
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   (setq register-preview-delay 0.01
         register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
   (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+        xref-show-definitions-function #'consult-xref
+        read-file-name-completion-ignore-case t  ; ignore case when searching filenames
+        read-buffer-completion-ignore-case t     ; ignore case when grepping buffers
+        completion-ignore-case t)                ; ignore case on completions
   :config
   (consult-customize
     consult-theme :preview-key '(:debounce 0.2 any)
@@ -88,8 +86,7 @@
     consult--source-recent-file consult--source-project-recent-file
     :preview-key '(:debounce 0.0 any)))
 
-
-;; Allow specifying substrings instead of having to tab complete from the beginning in Vertico
+;;; Allow specifying substrings instead of having to tab complete from the beginning in Vertico
 (use-package orderless
   :ensure t
   :init
@@ -97,8 +94,7 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
-
-;; Contextual actions for vertico (delete, rename, etc...)
+;;; Contextual actions for vertico (delete, rename, etc...)
 (use-package embark
   :ensure t
   :bind (("C-c" . embark-act)         ;; pick some comfortable binding
@@ -116,51 +112,31 @@
                  (window-parameters (mode-line-format . none)))))
 
 
-;; Contextual actions for consult stuff too
+;;; Contextual actions for consult stuff too
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :ensure t   ; only need to install it, embark loads it after consult if found
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 
-;; Automatically enable <lang>-ts-mode for appropriate modes
+;;; Automatically enable <lang>-ts-mode for appropriate modes
 (use-package treesit-auto
-  :ensure t
+  :ensure (:host github :repo "renzmann/treesit-auto")
   :custom
   (treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-
-
-;;; Auto complete (works with eglot to get candidates)
-;(use-package company
-;  :ensure t
-;  :config
-;  (setq company-tooltip-align-annotations t)  ; ocd
-;  (setq company-minimum-prefix-length 1)      ; reduce needed chars before company kicks in
-;  (setq company-idle-delay 0)                 ; no delay for automatic popup
-;  (setq company-selection-wrap-around t)
-;  (with-eval-after-load 'company
-;    (define-key company-active-map (kbd "C-n") 'company-select-next)
-;    (define-key company-active-map (kbd "C-p") 'company-select-previous)
-;    (define-key company-search-map (kbd "C-n") 'company-select-next)
-;    (define-key company-search-map (kbd "C-p") 'company-select-previous)
-;    (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
-;  :bind (("C-." . company-complete))
-;  :hook (prog-mode . company-mode)
-
-
+;;; Inline UI popup for completions (instead of just in the minibuffer)
 (use-package corfu
   :ensure t
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-auto-delay 0)           ;; 0 is not recommended
-  (corfu-auto-prefix 1)          ;; 1 is not recommended
-  (corfu-separator ?\s)          ;; Orderless field separator
-  ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-auto-delay 0.1)         ;; 0 is not recommended
+  (corfu-auto-prefix 0.7)        ;; 1 is not recommended
+  ;(corfu-separator ?\s)         ;; Orderless field separator
+  ;;(corfu-quit-at-boundary nil) ;; Never quit at completion boundary
   ;;(corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;;(corfu-preview-current nil)    ;; Disable current candidate preview
   ;;(corfu-preselect 'prompt)      ;; Preselect the prompt
@@ -168,9 +144,7 @@
   ;;(corfu-scroll-margin 5)        ;; Use scroll margin
 
   ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
+  :hook ((prog-mode shell-mode eshell-mode) . corfu-mode)
 
   ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
   ;; be used globally (M-/).  See also the customization variable
@@ -178,9 +152,21 @@
   :init
   (global-corfu-mode))
 
+(use-package nerd-icons
+  :ensure t
+  :after corfu
+  :init
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode))
 
 ;; A few more useful configurations...
 (use-package emacs
+  :ensure nil
   :init
   ;; TAB cycle if there are only few candidates
   ;; (setq completion-cycle-threshold 3)
@@ -217,7 +203,6 @@
   :ensure t
   :config (setq geiser-guile-binary "guile3.0"))
 
-
 (use-package racket-mode
   :ensure t)
 
@@ -225,7 +210,7 @@
   :ensure t)
 
 (use-package cider
-  :ensure t)
+  :ensure)
 
 (use-package protobuf-mode
   :ensure t)
@@ -238,6 +223,69 @@
 
 (use-package cargo
   :ensure t)
+
+(use-package atom-one-dark-theme
+  :ensure (:host github :repo "jonathanchu/atom-one-dark-theme")
+  :config
+  (load-theme 'atom-one-dark t))
+
+;(use-package doom-themes
+;  :ensure t)
+;(with-eval-after-load 'doom-themes
+;  (setq doom-themes-treemacs-theme "doom-colors")
+;  (doom-themes-treemacs-config))
+;(use-package all-the-icons
+;  :ensure t)
+
+;;; doom-modeline for bottom status bar
+;(use-package doom-modeline
+;      :ensure t
+;      :hook (after-init . doom-modeline-mode)
+;      :config
+;      ;; Don’t compact font caches during GC. Improves performance
+;      (setq inhibit-compacting-font-caches t)
+;      ;; Fix symlink bug for emacs
+;      (setq find-file-visit-truename t))
+
+(use-package telephone-line
+  :ensure (:host github :repo "dbordak/telephone-line")
+  :config
+    (telephone-line-mode 1))
+
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (setq treemacs-filewatch-mode t
+        treemacs-follow-mode t
+        treemacs-display-current-project-exclusively t
+        treemacs-project-follow-mode t
+        treemacs-file-follow-delay 0.0
+        treemacs-follow-after-init t
+        treemacs-expand-after-init t
+        treemacs-litter-directories '("/.venv" "/build" "/.cache" "/eln-cache")
+        treemacs-show-cursor nil
+        treemacs-wide-toggle-width 70
+        treemacs-width 50
+        treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+        treemacs-move-files-by-mouse-dragging t
+        treemacs-missing-project-action 'ask
+        treemacs-find-workspace-method 'find-for-file-or-pick-first
+        treemacs-collapse-dirs 3
+        treemacs-project-follow-cleanup t
+        treemacs-git-mode 'simple)
+  (treemacs-resize-icons 18))
+
+(use-package treemacs-evil
+  :after treemacs
+  :ensure t)
+
+(use-package transient
+  :ensure (:host github :repo "magit/transient"))
+
+(use-package magit
+  :ensure (:host github :repo "magit/magit"))
 
 ;;; Remove trailing whitespace on lines you've edited
 ;(use-package ws-butler
@@ -259,11 +307,30 @@
 ;  :ensure t
 ;  :config (dimmer-mode t))
 
-;(use-package nerd-icons-completion
+;(use-package doom-themes
 ;  :ensure t
-;  :after marginalia
 ;  :config
-;  (nerd-icons-completion-mode))
+;  ;; Global settings (defaults)
+;  (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
+;        doom-themes-enable-italic t)
+;  ; if nil, italics is universally disabled
+;  ;(load-theme 'doom-horizon t)
+;  ;(load-theme 'doom-dracula t)
+;  (load-theme 'doom-one t)
+;  ;(load-theme 'doom-vibrant t)
+;  ;(load-theme 'doom-acario-dark t)
+;  ;(load-theme 'doom-Iosvkem)
+;  ;(load-theme 'doom-material)
+;  ;(load-theme 'doom-monokai-classic)
+;  ;(load-theme 'doom-monokai-pro)
+;  ;(load-theme 'doom-molokai)
+;  ;(load-theme 'doom-palenight)
+;  ;(load-theme 'doom-snazzy)
+;  ;(load-theme 'doom-solarized-dark)
+;  ;(load-theme 'doom-tomorrow-night)
+;  ;(load-theme 'doom-wilmersdorf)
+;  ;(doom-themes-visual-bell-config)
+;)
 
 
 (provide 'init-packages)
