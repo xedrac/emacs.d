@@ -110,7 +110,7 @@
 ;(set-frame-font "Liberation Mono-14" nil t)
 ;(set-frame-font "Source Code Pro-14" nil t)
 ;(set-frame-font "FiraCode NF-14" nil t)
-(set-frame-font "FiraCode Nerd Font Mono-14" nil t)
+(set-frame-font "FiraCode Nerd Font Mono" nil t)
 ;(set-frame-font "FiraCode Nerd Font Mono Light-14" nil t)
 
 (provide 'init-core)

@@ -80,8 +80,8 @@
   "p" 'project-switch-project ;'counsel-projectile-switch-project
 
   ; toggles
-  ;"t s" 'neotree-toggle
-  "t s" 'treemacs
+  "t s" 'neotree-toggle
+  ;"t s" 'treemacs
   "t w" 'whitespace-mode
 
   ; help
