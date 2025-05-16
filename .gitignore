@@ -11,7 +11,7 @@
 *.~undo-tree
 
 # Generated files
-custom.el
+#custom.el
 elpa
 package-quickstart.el
 rust-analyzer
