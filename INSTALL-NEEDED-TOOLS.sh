@@ -2,7 +2,7 @@
 
 # Install some system packages
 sudo dnf update --refresh -y 
-sudo dnf install -y clang-devel bear ripgrep fd-find clisp locate ccls
+sudo dnf install -y clang-devel bear ripgrep fd-find locate libvterm cmake
 
 # Install rustup and rust
 if ! command -v rustup &> /dev/null; then
@@ -24,11 +24,11 @@ cargo xtask install --server
 pip3 install --user wheel pyls python-language-server[all]
 
 # Install Common Lisp stuff
-sudo dnf install sbcl
-mkdir -p ~/quicklisp
-pushd ~/quicklisp
-curl -O https://beta.quicklisp.org/quicklisp.lisp
-popd
+#sudo dnf install sbcl
+#mkdir -p ~/quicklisp
+#pushd ~/quicklisp
+#curl -O https://beta.quicklisp.org/quicklisp.lisp
+#popd
 
 #echo ""
 #echo ""
@@ -45,5 +45,5 @@ popd
 #
 #sbcl --load ~/quicklisp/quicklisp.lisp
 
-sbcl --load ~/quicklisp/quicklisp.lisp --eval "(quicklisp-quickstart:install)" --quit
-sbcl --load ~/quicklisp/setup.lisp --eval "(ql:add-to-init-file)" --quit
+#sbcl --load ~/quicklisp/quicklisp.lisp --eval "(quicklisp-quickstart:install)" --quit
+#sbcl --load ~/quicklisp/setup.lisp --eval "(ql:add-to-init-file)" --quit

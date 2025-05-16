@@ -16,8 +16,9 @@
   ;"'"   '(lambda () (interactive) (term "/bin/bash"))
   "'"   'term ;'project-eshell
   "?"   'general-describe-keybindings
-  "`"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-keybindings.el"))
-  "~"   '(lambda () (interactive) (find-file "~/.emacs.d/lisp/init-packages.el"))
+  "`"   '(lambda () (interactive) (dired (expand-file-name "lisp/" user-emacs-directory)))
+  ;"`"   '(lambda () (interactive) (find-file (expand-file-name "lisp/init-keybindings.el" user-emacs-directory)))
+  "~"   '(lambda () (interactive) (find-file (expand-file-name "lisp/init-packages.el" user-emacs-directory)))
   "R"   '(lambda() (interactive) (load-file user-init-file))
   "e b" 'eval-buffer
   "e s" 'eval-last-sexp
@@ -38,8 +39,6 @@
   "o i" 'consult-ripgrep
   "o g" 'consult-git-grep
   "o e" 'consult-buffer
-  ;"f e k" '(lambda () (interactive) (find-file "~/.emacs.d/keybindings.el"))
-  ;"f e d" '(lambda () (interactive) (dired "~/.emacs.d/load.d"))
 
   ; buffers
   "b a" 'consult-buffer
@@ -96,7 +95,7 @@
   "s ." 'xref-find-definitions-other-window
   "s o" 'xref-go-back
   "s r" 'xref-find-references
-  "s c" 'xref-find-references-and-replace
+  "s c" 'xref-find-references-and-replace)
   ;"s p" 'lsp-ui-peek-find-definitions
   ;"s '" 'lsp-ui-peek-find-references
   ;"s ," 'lsp-ui-peek--goto-xref-other-window
@@ -116,10 +115,10 @@
 
   ; rust
   ;; "r D" '((lambda () (interactive)
-	    ;; (let ((rustdir "~/projects/rust/"))
-	      ;; (progn (cd rustdir)
-		     ;; (setq default-directory rustdir))))
-	  ;; :which-key "cd ~/projects/rust")
+      ;; (let ((rustdir "~/projects/rust/"))
+        ;; (progn (cd rustdir)
+         ;; (setq default-directory rustdir))))
+    ;; :which-key "cd ~/projects/rust")
   ;; "r n" 'cargo-process-new
   ;; "r r" 'cargo-process-run
   ;; "r d" 'cargo-process-doc
@@ -136,7 +135,7 @@
 ;  "m s" 'magit-status
 ;  "m c" 'magit-branch-checkout
 ;  "m b" 'magit-blame
-)
+
 
   ; TODO debugging
   ; TODO email?
@@ -221,20 +220,20 @@ This checks in turn:
     (interactive)
     (let (sym)
     ;; sigh, function-at-point is too clever.  we want only the first half.
-    (cond ((setq sym (ignore-errors
-        (with-syntax-table emacs-lisp-mode-syntax-table
-            (save-excursion
-                (or (not (zerop (skip-syntax-backward "_w")))
-                (eq (char-syntax (char-after (point))) ?w)
-                (eq (char-syntax (char-after (point))) ?_)
-                (forward-sexp -1))
-                (skip-chars-forward "`'")
-                (let ((obj (read (current-buffer))))
-                (and (symbolp obj) (fboundp obj) obj))))))
-        (describe-function sym))
-        ((setq sym (variable-at-point)) (describe-variable sym))
-        ;; now let it operate fully -- i.e. also check the
-        ;; surrounding sexp for a function call.
-        ((setq sym (function-at-point)) (describe-function sym)))))
+     (cond ((setq sym (ignore-errors
+                       (with-syntax-table emacs-lisp-mode-syntax-table
+                           (save-excursion
+                               (or (not (zerop (skip-syntax-backward "_w")))
+                                (eq (char-syntax (char-after (point))) ?w)
+                                (eq (char-syntax (char-after (point))) ?_)
+                                (forward-sexp -1))
+                               (skip-chars-forward "`'")
+                               (let ((obj (read (current-buffer))))
+                                (and (symbolp obj) (fboundp obj) obj))))))
+            (describe-function sym))
+         ((setq sym (variable-at-point)) (describe-variable sym))
+         ;; now let it operate fully -- i.e. also check the
+         ;; surrounding sexp for a function call.
+         ((setq sym (function-at-point)) (describe-function sym)))))
 
 (provide 'init-keybindings)

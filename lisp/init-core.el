@@ -58,7 +58,7 @@
 ;;; Offload the custom-set-variables to a separate file
 ;;; This keeps your init.el neater and you have the option
 ;;; to gitignore your custom.el if you see fit.
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 ;;; Load custom file. Don't hide errors. Hide success message
@@ -67,8 +67,7 @@
 ;;; Avoid littering the user's filesystem with backups
 (setq
    backup-by-copying t      ; don't clobber symlinks
-   backup-directory-alist
-    '((".*" . "~/.emacs.d/saves/"))    ; don't litter my fs tree
+   backup-directory-alist (expand-file-name "saves/" user-emacs-directory)
    delete-old-versions t
    kept-new-versions 6
    kept-old-versions 2
@@ -84,7 +83,7 @@
 
 ;;; Remember line when you revisit a file
 (setq-default save-place t)
-(setq save-place-file (concat user-emacs-directory "places"))
+(setq save-place-file (expand-file-name "places" user-emacs-directory))
 (setq delete-active-region t)
 
 (setq require-final-newline t)       ; add newline to end of file if necessary
@@ -94,7 +93,7 @@
 (add-hook 'prog-mode-hook
           (lambda () (add-hook 'before-save-hook
                                (lambda () (delete-trailing-whitespace)
-                               nil 'local))))
+                                nil 'local))))
 
 ;;; Save last session
 ;(desktop-save-mode 1)
@@ -110,6 +109,8 @@
 ;(set-frame-font "DejaVu Sans Mono-14" nil t)
 ;(set-frame-font "Liberation Mono-14" nil t)
 ;(set-frame-font "Source Code Pro-14" nil t)
-(set-frame-font "FiraCode NF-14" nil t)
+;(set-frame-font "FiraCode NF-14" nil t)
+(set-frame-font "FiraCode Nerd Font Mono-14" nil t)
+;(set-frame-font "FiraCode Nerd Font Mono Light-14" nil t)
 
 (provide 'init-core)

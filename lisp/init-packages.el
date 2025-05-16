@@ -1,29 +1,45 @@
 ;; -*- lexical-binding: t; -*-
 
-;(with-eval-after-load 'eglot
+(add-to-list 'eglot-server-programs '((rust-mode rust-ts-mode) . ("rust-analyzer")))
+(add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("pyright" "--stdio")))
+(add-to-list 'eglot-server-programs '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd" "--background-index")))
+;(add-to-list 'eglot-server-programs '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\")))
+(add-to-list 'eglot-server-programs '((haskell-mode haskell-ts-mode) . ("haskell-language-server-wrapper")))
+;(add-to-list 'eglot-server-programs '((js-mode typescript-mode ts-mode) . ("typescript-language-server" "--stdio")))
+;(add-to-list 'eglot-server-programs '((java-mode java-ts-mode) . ("jdtls")))
+;(add-to-list 'eglot-server-programs '((go-mode) . ("gopls")))
+;(add-to-list 'eglot-server-programs '((web-mode html-mode css-mode) . ("vscode-html-language-server" "--stdio")))
+(add-hook 'prog-mode-hook 'eglot-ensure)
+
+
 ;(use-package eglot
 ;  :ensure t
-;  :hook ((rust-mode rust-ts-mode c-mode c-ts-mode c++-mode c++-ts-mode python-mode python-ts-mode haskell-mode) . eglot-ensure))
-;  ;(add-to-list 'eglot-server-programs
-;  ;             ;'((c-mode c-ts-mode c++-mode c++-ts-mode) . ("ccls" "--init" "{\"compilationDatabaseDirectory\": \"build\"}"))))
-;  ;             '((c-mode c-ts-mode c++-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\""))
-;  ;             '((rust-mode rust-ts-mode) . ("rust-analyzer"))))
+;  :init
+;  (add-to-list 'eglot-server-programs '((rust-mode rust-ts-mode) . ("rust-analyzer")))
+;  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("pyright" "--stdio")))
+;  (add-to-list 'eglot-server-programs '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd" "--background-index")))
+;  ;(add-to-list 'eglot-server-programs '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd" "--compile-commands-dir=\"build\")))
+;  (add-to-list 'eglot-server-programs '((haskell-mode haskell-ts-mode) . ("haskell-language-server-wrapper")))
 
 ;;; Start eglot/lsp automatically when entering these programming modes
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)
-(add-hook 'c-mode-hook 'eglot-ensure)    ; Requires clangd to be installed already
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)  ; Same as ^^^
-(add-hook 'haskell-mode-hook 'eglot-ensure)
-(add-hook 'rust-mode 'eglot-ensure)
-(add-hook 'rust-ts-mode 'eglot-ensure)
+;(add-hook 'c-mode-hook 'eglot-ensure)
+;(add-hook 'c-ts-mode-hook 'eglot-ensure)
+;(add-hook 'c++-mode-hook 'eglot-ensure)
+;(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+;(add-hook 'c-mode-hook 'eglot-ensure)    ; Requires clangd to be installed already
+;(add-hook 'c++-ts-mode-hook 'eglot-ensure)  ; Same as ^^^
+;(add-hook 'haskell-mode-hook 'eglot-ensure)
+;(add-hook 'haskell-ts-mode-hook 'eglot-ensure)
+;(add-hook 'rust-mode 'eglot-ensure)
+;(add-hook 'rust-ts-mode 'eglot-ensure)
 
 ;;; Convenient keybinding support for evil
 (use-package general
   :ensure t)
 (elpaca-wait)
+
+(use-package vterm
+  :ensure t)
 
 ;;; Different undo/redo behavior
 ;(use-package undo-tree
@@ -128,29 +144,43 @@
   (global-treesit-auto-mode))
 
 ;;; Inline UI popup for completions (instead of just in the minibuffer)
-(use-package corfu
+;(use-package corfu
+;  :ensure t
+;  :init
+;  (global-corfu-mode)
+;  :custom
+;  (setq eglot-stay-out-of '(completion-at-point))
+;  (corfu-auto t)                 ;; Enable auto completion
+;  (corfu-auto-delay 0.1)        ;; 0 is not recommended
+;  (corfu-auto-prefix 1)         ;; 1 is not recommended
+;  ;(corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+;  ;(corfu-separator ?\s)         ;; Orderless field separator
+;  ;;(corfu-quit-at-boundary nil) ;; Never quit at completion boundary
+;  ;(corfu-quit-no-match 'separator)      ;; Never quit, even if there is no match
+;  ;;(corfu-preview-current nil)    ;; Disable current candidate preview
+;  ;;(corfu-preselect 'prompt)      ;; Preselect the prompt
+;  ;;(corfu-on-exact-match nil)     ;; Configure handling of exact matches
+;  ;;(corfu-scroll-margin 5)        ;; Use scroll margin
+;  ;; Enable Corfu only for certain modes.
+;  :hook ((prog-mode shell-mode eshell-mode) . corfu-mode))
+
+(use-package company
   :ensure t
-  :custom
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-auto-delay 0.1)         ;; 0 is not recommended
-  (corfu-auto-prefix 0.7)        ;; 1 is not recommended
-  ;(corfu-separator ?\s)         ;; Orderless field separator
-  ;;(corfu-quit-at-boundary nil) ;; Never quit at completion boundary
-  ;;(corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;;(corfu-preview-current nil)    ;; Disable current candidate preview
-  ;;(corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;;(corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;;(corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; Enable Corfu only for certain modes.
-  :hook ((prog-mode shell-mode eshell-mode) . corfu-mode)
-
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
   :init
-  (global-corfu-mode))
+  (global-company-mode)
+  :custom
+  (company-idle-delay 0.1) ;; Delay before showing completions (adjust as needed)
+  (company-minimum-prefix-length 1) ;; Trigger completions after 1 character
+  (company-tooltip-align-annotations t) ;; Align annotations (e.g., function signatures)
+  :config
+  (add-to-list 'company-backends 'company-capf))
+
+(use-package company-box
+  :ensure t
+  :hook (company-mode . company-box-mode))
+
+(require 'which-key)
+(which-key-mode)
 
 (use-package nerd-icons
   :ensure t
@@ -267,7 +297,7 @@
         treemacs-litter-directories '("/.venv" "/build" "/.cache" "/eln-cache")
         treemacs-show-cursor nil
         treemacs-wide-toggle-width 70
-        treemacs-width 50
+        treemacs-width 40
         treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
         treemacs-move-files-by-mouse-dragging t
         treemacs-missing-project-action 'ask

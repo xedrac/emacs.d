@@ -23,10 +23,7 @@
         comp-deferred-compilation-black-list '()))
 
 ;;; Add conf folder to the load path
-(add-to-list 'load-path "~/.emacs.d/lisp")
-;(add-to-list 'load-path "~/.emacs.d/conf")
-;(add-to-list 'load-path "~/.emacs.d/conf/programming")
-;(add-to-list 'load-path (expand-file-name "conf" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 ;(load (expand-file-name "~/.roswell/helper.el"))
 
 
@@ -106,6 +103,3 @@
 ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 ;;(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 ;;(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-
-
-
