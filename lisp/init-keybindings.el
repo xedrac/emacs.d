@@ -11,7 +11,8 @@
   :states '(normal visual motion)
 
   ; misc
-  "SPC" 'execute-extended-command
+  ;"SPC" 'execute-extended-command
+  "."   'project-or-external-find-file
   ;"'"   '(lambda () (interactive) (term "/bin/bash"))
   "'"   'term ;'project-eshell
   "?"   'general-describe-keybindings
